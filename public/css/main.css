@@ -9,33 +9,52 @@ body {
 
 img {
     max-width: 100%;
-
-    border-radius: 2px;
 }
 
 .photo-list-container {
-    margin: 100px auto;
+    margin: 0 auto;
     max-width: 660px;
 }
 
 .grid-list {
     list-style: none;
-    margin: 0 0 0 -20px;
+    margin: 0;
     padding: 0;
 }
 
 .grid-list li {
-    max-width: 200px;
+    width: 50%;
     float: left;
-    margin: 0 0 20px 20px;
+    margin: 0;
     backface-visibility: hidden;
-    transition: transform .2s ease-in-out;
+    transition: transform .1s ease-in-out;
 }
 
 .grid-list li:hover {
-    transform: translate3d(0,-3px,0);
+    transform: scale3d(.9,.9,1);
 }
 
 .grid-list img {
     display: block;
+}
+
+@media (min-width: 400px) {
+    .grid-list li {
+        width: 33.33%;
+    }
+}
+
+@media (min-width: 640px) {
+    img {
+        border-radius: 2px;
+    }
+
+    .photo-list-container {
+        margin: 100px auto;
+    }
+
+    .grid-list li {
+        max-width: 200px;
+        margin: 0 0 2% 2%;
+    }
 }
