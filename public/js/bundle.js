@@ -9,7 +9,8 @@ var env = {
     PER_PAGE: 9,
 
     currentIndex: 0,
-    photoSet: []
+    photoSet: [],
+    lightboxActive: false
 };
 
 /**
@@ -112,12 +113,35 @@ function listHtml (photos) {
     }).join('\n');
 }
 
+function stepLightbox (step) {
+    step = parseInt(step, 10);
+    var targetIndex = env.currentIndex + step;
+    var lastIndex = env.photoSet.length - 1;
+    if (targetIndex < 0) targetIndex = lastIndex;
+    if (targetIndex > lastIndex) targetIndex = 0;
+
+    lightbox(env.photoSet[targetIndex]);
+}
+
+function bindArrowStep () {
+    var keyMap = {
+        37: -1,
+        39: 1
+    };
+    document.body.addEventListener('keyup', function (e) {
+        var step = keyMap[e.which];
+        if (typeof step === 'undefined') return;
+
+        stepLightbox(step);
+    });
+}
+
 /**
  * Initializes lightbox with provided img.
  *
  * @param {object} img - Image object to initialize with.
  */
-var lightbox = (function lightbox () {
+var lightbox = (function createLightboxFn () {
     var ACTIVE_CLASS = 'is-active';
     var LOADING_CLASS = 'is-loading';
 
@@ -126,17 +150,24 @@ var lightbox = (function lightbox () {
     var activeTitle = document.getElementById('active-photo-title');
 
     el.addEventListener('click', function (e) {
-        if (e.target.classList.contains('js-close-lightbox')) {
-            el.classList.remove(ACTIVE_CLASS);
-            setTimeout(function () {
-                activeImg.src = '/images/blank.gif'; // prevent invalid img border
-                activeTitle.innerText = '';
-                el.classList.remove(LOADING_CLASS);
-            }, 80);
-        }
+        if (!e.target.classList.contains('js-close-lightbox')) return;
+
+        el.classList.remove(ACTIVE_CLASS);
+        env.lightboxActive = false;
+        setTimeout(function () {
+            activeImg.src = '/images/blank.gif'; // prevent invalid img border
+            activeTitle.innerText = '';
+            el.classList.remove(LOADING_CLASS);
+        }, 80);
     });
 
-    return function (img) {
+    el.addEventListener('click', function (e) {
+        if (!e.target.classList.contains('js-photo-nav')) return;
+
+        stepLightbox(e.target.dataset.step);
+    });
+
+    return function _lightbox (img) {
         env.currentIndex = img.index;
 
         loadImg(img.lrg.url, function (err, _img) {
@@ -145,10 +176,12 @@ var lightbox = (function lightbox () {
 
             setTimeout(function () {
                 el.classList.remove(LOADING_CLASS);
+                env.lightboxActive = true;
             }, 80);
         });
 
-        el.classList.add(LOADING_CLASS, ACTIVE_CLASS);
+        el.classList.add(ACTIVE_CLASS);
+        if (!env.lightboxActive) el.classList.add(LOADING_CLASS);
     }
 })();
 
@@ -178,6 +211,8 @@ function photoList (el, opts) {
 /**
  * Blastoff
  */
+bindArrowStep();
+
 fetchPhotos(function (err, photos) {
     if (err) console.error('Error fetching photos.');
 
