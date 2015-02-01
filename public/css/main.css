@@ -5,10 +5,12 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: "BPreplay" verdana sans-serif;
 }
 
 img {
     max-width: 100%;
+    border: none;
 }
 
 .photo-list-container {
@@ -34,10 +36,93 @@ img {
     transform: scale3d(.9,.9,1);
 }
 
-.grid-list img {
+.grid-list img,
+.grid-list a {
     display: block;
 }
 
+.photo-lightbox-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: transparent;
+    transform-style: preserve-3d;
+    visibility: hidden;
+
+    transition: visibility 0s linear .12s,
+                z-index 0s linear .12s,
+                background-color .12s ease-in-out;
+}
+
+/**
+ * Dynamically resize img based on viewport.
+ */
+.active-photo-container {
+    position: absolute;
+    padding: 20px;
+    text-align: center;
+}
+
+/**
+ * Transitions.
+ *
+ * - Default: lightbox is hidden.
+ * - Acitve and loading: hide img and title.
+ * - Active and loaded: show img and title.
+ */
+.photo-list-container {
+    z-index: 100;
+    position: relative;
+}
+
+.photo-lightbox-container.is-active {
+    z-index: 200;
+    background-color: rgba(255,255,255,0.9);
+    visibility: visible;
+    transition-delay: 0;
+}
+
+.photo-lightbox-container img {
+    transition: transform .1s ease-in-out,
+                opacity .1s ease-in-out;
+
+}
+
+.photo-lightbox-container .photo-title {
+    margin-top: 20px;
+    transition: transform .1s ease-in-out,
+                opacity .1s ease-in-out;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+.photo-lightbox-container.is-active img {
+    opacity: 1;
+    transform: scale3d(1,1,1);
+}
+
+.photo-lightbox-container.is-active .photo-title {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+}
+
+.photo-lightbox-container img,
+.photo-lightbox-container.is-loading img {
+    opacity: 0;
+    transform: scale3d(0,0,0);
+}
+
+.photo-lightbox-container .photo-title,
+.photo-lightbox-container.is-loading .photo-title {
+    transform: translate3d(0,10px,0);
+    opacity: 0;
+}
+
+/**
+ * Responsive
+ */
 @media (min-width: 400px) {
     .grid-list li {
         width: 33.33%;
@@ -56,5 +141,13 @@ img {
     .grid-list li {
         max-width: 200px;
         margin: 0 0 2% 2%;
+    }
+
+    .active-photo-container {
+        padding: 10px;
+        top: 50%;
+        transform: translate3d(0,-50%,0);
+        left: 12.5%;
+        right: 12.5%;
     }
 }

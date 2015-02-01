@@ -5,13 +5,22 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+        <link rel="dns-prefetch" href="http://api.flickr.com">
+
+        <link rel="stylesheet" href="//brick.a.ssl.fastly.net/BPreplay:400,700:f" type="text/css">
         <link rel="stylesheet" href="/css/main.css" media="screen" title="Main" charset="utf-8">
     </head>
     <body>
-        <div class="photo-list-container">
+        <div id="photos" class="photo-list-container">
             <ul id="photo-list" class="grid-list"></ul>
         </div>
-        <div class="photo-lightbox-container"></div>
+
+        <div id="lightbox" class="photo-lightbox-container js-close-lightbox">
+            <div class="active-photo-container">
+                <img id="active-photo-img">
+                <div id="active-photo-title" class="photo-title"></div>
+            </div>
+        </div>
 
         <script charset="utf-8" src="/js/bundle.js"></script>
     </body>
