@@ -1,0 +1,10 @@
+before_sciprt:
+  - chmod +x ./deploy.sh
+
+script:
+  - ./deploy.sh
+
+env:
+  global:
+      - GH_REF: github.com/derekr/photo-viewer-3000.git
+      - secure: LCDc9z4z7pGWCYekTLxRuwsT2vpjw/+W1pFZUt7jg+76GFsC8Ilnvt/Ujm6V4cYc0mkVTmLrUvreWAMgP8cRu7lZHcNwrGrIWnwVSVpFQGlLMNXH+c+hzLfSDFhTlPqkKOV74QMHd7By0eoZ84tSOxFH3kfAMMmT/Vsl25t2dz8=
