@@ -4,8 +4,11 @@
   "description": "A chill photo lightbox experiment.",
   "main": "index.js",
   "scripts": {
-    "build": "cp -r public build && npm run autoprefixer",
+    "start": "http-server ./build",
+    "build": "rm -rf build || exit 0 && cp -r public build && npm run autoprefixer",
     "autoprefixer": "autoprefixer build/css/main.css",
+    "watch": "onchange 'public/**/*' -- npm run build",
+    "dev": "npm start && npm run watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +22,8 @@
   },
   "homepage": "https://github.com/derekr/photo-viewer-3000",
   "dependencies": {
-    "autoprefixer": "^5.1.0"
+    "autoprefixer": "^5.1.0",
+    "http-server": "^0.7.4",
+    "onchange": "^0.1.0"
   }
 }
