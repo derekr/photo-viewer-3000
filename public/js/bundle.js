@@ -214,7 +214,7 @@ var lightbox = (function createLightboxFn () {
         env.lightboxActive = false;
         setTimeout(function () {
             activeImg.src = '/images/blank.gif'; // prevent invalid img border
-            activeTitle.innerText = '';
+            activeTitle.innerHTML = '';
             el.classList.remove(LOADING_CLASS);
         }, 80);
     });
@@ -231,7 +231,7 @@ var lightbox = (function createLightboxFn () {
         loadImg(img.lrg.url, function (err, _img) {
             if (err) return console.error('Error loading lightbox ', err);
 
-            activeTitle.innerText = img.title;
+            activeTitle.innerHTML = img.title;
             activeImg.src = _img.src;
 
             pushState(img.index);
