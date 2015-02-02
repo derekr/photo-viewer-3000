@@ -1,3 +1,4 @@
+#!/bin/bash
 (
 cp -r public build
 cd build
