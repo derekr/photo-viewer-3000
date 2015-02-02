@@ -78,6 +78,12 @@ function fetchPhotos (callback) {
     }
 }
 
+/**
+ * Prefetches src and fires callback when image is loaded.
+ *
+ * @param {string} src - Path to image resource.
+ * @param {function} callback - Fired when image loads w/ [err, img].
+ */
 function loadImg (src, callback) {
     callback = (typeof callback === 'function') ? callback : function () {};
 
@@ -113,6 +119,16 @@ function listHtml (photos) {
     }).join('\n');
 }
 
+/**
+ * Will update the current light box photo from the current index
+ * based on the provided step. If the provided step is out of bounds
+ * the calculated index will wrap within available photoSet.
+ *
+ * ex stepLightbox(1) // moves forward one photo in the set
+ * ex stepLightbox(-2) // moves back two photos in the set
+ *
+ * @param {number} step - Positive or negative desired offset.
+ */
 function stepLightbox (step) {
     step = parseInt(step, 10);
     var targetIndex = env.currentIndex + step;
@@ -123,6 +139,10 @@ function stepLightbox (step) {
     lightbox(env.photoSet[targetIndex]);
 }
 
+/**
+ * Binds event listener on document body and handles arrow key navigation
+ * for the photo lightbox.
+ */
 function bindArrowStep () {
     var keyMap = {
         37: -1,
