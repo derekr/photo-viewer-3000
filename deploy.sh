@@ -1,6 +1,5 @@
 #!/bin/bash
 (
-cp -r public build
 cd build
 git init
 git config user.name "Derek Reynolds"

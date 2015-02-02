@@ -1,1 +1,3 @@
 instructions.txt
+build/*
+node_modules/*
