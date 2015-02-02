@@ -132,6 +132,11 @@ a:hover {
     cursor: default;
 }
 
+.photo-nav-link {
+    padding: 15px;
+    display: inline-block;
+}
+
 .photo-lightbox-container .photo-title,
 .photo-lightbox-container .photo-nav-link {
     transition: transform .1s ease-in-out,
