@@ -37,7 +37,6 @@ a:hover {
     width: 50%;
     float: left;
     margin: 0;
-    backface-visibility: hidden;
     transition: transform .1s ease-in-out;
 }
 
@@ -48,6 +47,31 @@ a:hover {
 .grid-list img,
 .grid-list a {
     display: block;
+}
+
+.photo-list-loading {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: scale3d(0,0,0);
+    transition: opacity .1s ease-in-out,
+                transform .1s ease-in-out;
+}
+
+.is-loading .photo-list-loading {
+    opacity: 1;
+    transform: scale3d(1,1,1);
+}
+
+.grid-list a {
+    transition: opacity .1s ease-in-out,
+                transform .1s ease-in-out;
+}
+
+.is-loading .grid-list a {
+    transform: translate3d(0,10px,0);
+    opacity: 0;
 }
 
 .photo-lightbox-container {
@@ -84,6 +108,10 @@ a:hover {
 .photo-list-container {
     z-index: 100;
     position: relative;
+}
+
+.photo-lightbox-container {
+    z-index: 100;
 }
 
 .photo-lightbox-container.is-active {
@@ -158,6 +186,7 @@ a:hover {
     .grid-list li {
         max-width: 200px;
         margin: 0 0 2% 2%;
+        min-height: 132.797px;
     }
 
     .active-photo-container {

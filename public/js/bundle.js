@@ -96,6 +96,29 @@ function loadImg (src, callback) {
 }
 
 /**
+ * Load all image paths and fire callback once all have loaded.
+ *
+ * @param {array} images - Array of image path strings.
+ * @param {function} callback - Fired when all images have loaded [err, img].
+ */
+function loadAllImg (images, callback) {
+    var total = images.length;
+    var result = [];
+
+    for (i = 0; i < total; i++) {
+        loadImg(images[i], function (err, img) {
+            if (err) return callback(err);
+            result.push(img);
+            if (i === total) {
+                setTimeout(function () {
+                    callback(null, result);
+                }, 200)
+            }
+        });
+    }
+}
+
+/**
  * Render list of photos. Each photo object is mapped to
  * `li` elements.
  *
@@ -111,10 +134,14 @@ function listHtml (photos) {
     li.appendChild(anchor);
     anchor.appendChild(img);
 
-    return photos.map(function (p) {
+    var loadingMsgDelay = 80;
+    var loadingImgDelay = 100;
+
+    return photos.map(function (p, i) {
         li.dataset.index = p.index;
         anchor.href = p.lrg.url;
         img.src = p.med.url;
+        anchor.style.transitionDelay = loadingMsgDelay + (loadingImgDelay * i) + 'ms';
         return container.innerHTML;
     }).join('\n');
 }
@@ -214,8 +241,20 @@ var lightbox = (function createLightboxFn () {
  *               the only argument passed in.
  */
 function photoList (el, opts) {
+    var LOADING_CLASS = 'is-loading';
+
     var list = document.getElementById('photo-list');
-    list.innerHTML = listHtml(opts.photos);
+    el.classList.add(LOADING_CLASS);
+    loadAllImg(opts.photos.map(function (img) {
+        return img.med.url;
+    }), function (err, imgs) {
+        if (err) return console.error('Error fetching images: ', err);
+        
+        list.innerHTML = listHtml(opts.photos);
+        setTimeout(function () {
+            el.classList.remove(LOADING_CLASS);
+        }, 80);
+    });
 
     el.addEventListener('click', function (e) {
         var index = e.target.parentNode.parentNode.dataset.index;
