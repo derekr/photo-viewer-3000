@@ -14,6 +14,17 @@ var env = {
 };
 
 /**
+ * Proxy for updating history. Really this just updates the url hash
+ * since this is being hosted on github pages and I can't do server
+ * side routing.
+ *
+ * @param {number} index - Index of requested photo.
+ */
+function pushState (index) {
+    location.hash = index;
+}
+
+/**
  * Normalize response in to standard object incase I want to mess
  * around with other APIs.
  *
@@ -210,7 +221,7 @@ var lightbox = (function createLightboxFn () {
 
     el.addEventListener('click', function (e) {
         if (!e.target.classList.contains('js-photo-nav')) return;
-
+        e.preventDefault();
         stepLightbox(e.target.dataset.step);
     });
 
@@ -218,8 +229,12 @@ var lightbox = (function createLightboxFn () {
         env.currentIndex = img.index;
 
         loadImg(img.lrg.url, function (err, _img) {
+            if (err) return console.error('Error loading lightbox ', err);
+
             activeTitle.innerText = img.title;
             activeImg.src = _img.src;
+
+            pushState(img.index);
 
             setTimeout(function () {
                 el.classList.remove(LOADING_CLASS);
@@ -249,7 +264,7 @@ function photoList (el, opts) {
         return img.med.url;
     }), function (err, imgs) {
         if (err) return console.error('Error fetching images: ', err);
-        
+
         list.innerHTML = listHtml(opts.photos);
         setTimeout(function () {
             el.classList.remove(LOADING_CLASS);
@@ -273,7 +288,9 @@ function photoList (el, opts) {
 bindArrowStep();
 
 fetchPhotos(function (err, photos) {
-    if (err) console.error('Error fetching photos.');
+    if (err || typeof photos === 'undefined') {
+        return console.error('Error fetching photos.');
+    }
 
     env.photoSet = photos;
 
@@ -281,4 +298,7 @@ fetchPhotos(function (err, photos) {
         photos: photos,
         onSelect: function (img) { lightbox(img); }
     });
+
+    var index = location.hash.replace(/^#/, '');
+    if (index) stepLightbox(index);
 });
