@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Photo Viewer 3000</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link rel="dns-prefetch" href="http://api.flickr.com">
+
+        <link rel="stylesheet" href="//brick.a.ssl.fastly.net/BPreplay:400,700:f" type="text/css">
+        <link rel="stylesheet" href="/css/main.css?v=4" media="screen" title="Main" charset="utf-8">
+    </head>
+    <body>
+        <div id="photos" class="photo-list-container">
+            <span class="photo-list-loading">Fetching Images</span>
+            <ul id="photo-list" class="grid-list"></ul>
+        </div>
+
+        <div id="lightbox" class="photo-lightbox-container js-close-lightbox">
+            <div class="active-photo-container">
+                <img id="active-photo-img">
+                <div id="active-photo-title" class="photo-title"></div>
+                <a href="#" class="photo-nav-link js-photo-nav" data-step="-1">prev</a>
+                <a href="#" class="photo-nav-link js-photo-nav" data-step="1">next</a>
+            </div>
+        </div>
+
+        <script charset="utf-8" src="/js/bundle.js?v=3"></script>
+    </body>
+</html>
