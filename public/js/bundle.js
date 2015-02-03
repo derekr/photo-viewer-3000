@@ -21,6 +21,7 @@ var env = {
  * @param {number} index - Index of requested photo.
  */
 function pushState (index) {
+    if (typeof index === 'undefined') index = '';
     location.hash = index;
 }
 
@@ -169,6 +170,7 @@ function listHtml (photos) {
  */
 function stepLightbox (step) {
     step = parseInt(step, 10);
+    if (isNaN(step)) return;
     var targetIndex = env.currentIndex + step;
     var lastIndex = env.photoSet.length - 1;
     if (targetIndex < 0) targetIndex = lastIndex;
@@ -212,6 +214,7 @@ var lightbox = (function createLightboxFn () {
 
         el.classList.remove(ACTIVE_CLASS);
         env.lightboxActive = false;
+        pushState();
         setTimeout(function () {
             activeImg.src = '/images/blank.gif'; // prevent invalid img border
             activeTitle.innerHTML = '';
